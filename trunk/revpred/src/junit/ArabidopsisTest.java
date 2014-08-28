@@ -29,7 +29,7 @@ public class ArabidopsisTest extends AbstractMain {
 	 * Must correspond to name of the persistence unit in persistence.xml
 	 * @return
 	 */
-	private String getPersistenceUnit() {
+	protected String getPersistenceUnit() {
 		return "ArabidopsisOneKPtestdb";
 	}
 	
@@ -66,7 +66,7 @@ public class ArabidopsisTest extends AbstractMain {
 		return getEntityManagerFactory().createEntityManager();
 	}
 
-	private void populateDatabaseForTesting() {
+	protected void populateDatabaseForTesting() {
 		EntityTransaction t = null;
 		try {
 			File pdb_folder = getPDBDatabaseFolder();
@@ -76,14 +76,14 @@ public class ArabidopsisTest extends AbstractMain {
 			assertNotNull(em);
 
 			// read database file to load keyword database
-			System.err.println("Populating PDB Entries....");
+			/*System.err.println("Populating PDB Entries....");
 			t = em.getTransaction();
 			assertNotNull(t);
 			t.begin();
 			populatePDBEntries(em, new File(pdb_folder, getPDBDatabase()));
 			t.commit();
 			t = null;
-			System.err.println("After population of PDB data entries");
+			System.err.println("After population of PDB data entries");*/
 			
 			// run hhpred and populate the database with hits and sequences. Sequences without
 			// hits do not appear in the database
@@ -97,6 +97,7 @@ public class ArabidopsisTest extends AbstractMain {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void testDatabaseForCorrectResults() {
 		EntityManager em = getEntityManager();
 		String db = getPersistenceUnit();

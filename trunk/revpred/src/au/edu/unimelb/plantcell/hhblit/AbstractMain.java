@@ -65,6 +65,23 @@ public abstract class AbstractMain {
 	 */
 	public abstract File getQueryFastaFile();
 	
+	/**
+	 * The default implementation accepts all hits for storage into the database. But if you
+	 * wish to filter so that only some hits are accepted (eg. threshold) then override this
+	 * with your own callback
+	 */
+	protected AcceptHitCallback getHitAcceptor() {
+		return new AcceptHitCallback() {
+
+			@Override
+			public boolean accept(final HHPhredHit test_me) {
+				return true;
+			}
+			
+		};
+	}
+
+	
 	/*********************************************
 	 * METHODS USED BY ALL SUBCLASSES
 	 *********************************************/
@@ -168,7 +185,12 @@ public abstract class AbstractMain {
 			if (seq_id != null && sb.length() > 0) {
 				System.err.println("Saving "+seq_id+" to "+query_fasta_sequence_file.getAbsolutePath());
 				saveQuerySequenceTo(query_fasta_sequence_file, seq_id, sb.toString());
-				HHBlitsHitParser parser = new HHBlitsHitParser();
+				Sequence query = new Sequence();
+				query.setID(seq_id);
+				query.setSequence(sb.toString());
+				PDBHits hit = new PDBHits();
+				hit.setQuerySequence(query);
+				HHBlitsHitParser parser = new HHBlitsHitParser(hit, getHitAcceptor());
 				LogOutputStream stderr_logger = new LogOutputStream() {
 
 					@Override
@@ -187,11 +209,6 @@ public abstract class AbstractMain {
 				if (exe.isFailure(result)) {
 					throw new IOException("Unable to run "+phred);
 				}
-				PDBHits hit = new PDBHits();
-				Sequence query = new Sequence();
-				query.setID(seq_id);
-				query.setSequence(sb.toString());
-				hit.setQuerySequence(query);
 				List<HHPhredHit> hits = parser.getHits();
 				System.err.println("Got "+hits.size()+" hits for "+seq_id);
 				hit.setHits(hits);
@@ -201,7 +218,6 @@ public abstract class AbstractMain {
 						System.err.println("Top hit for "+seq_id+": "+s.getPDBID());
 						got_first = true;
 					}
-					s.setOwner(hit);
 				}
 				
 				if (hit.getHits().size() > 0) {

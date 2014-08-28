@@ -21,6 +21,63 @@
     </properties>
   </persistence-unit>
   
+   <persistence-unit name="revpred_chlamy_full_db" transaction-type="RESOURCE_LOCAL">
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.PDBEntry</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.PDBHits</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.Sequence</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.Keyword</class>
+   
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/revpred_chlamy_full_db" />
+      <property name="javax.persistence.jdbc.user" value="root" />
+      <property name="javax.persistence.jdbc.password" value="Ethgabitc!" />
+
+      <!-- EclipseLink should create the database schema automatically -->
+      <property name="eclipselink.ddl-generation" value="create-tables" />
+      <property name="eclipselink.ddl-generation.output-mode" value="database" />
+    </properties>
+  </persistence-unit>
+  
+  <persistence-unit name="revpred_ginkgo_mini_db" transaction-type="RESOURCE_LOCAL">
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.PDBEntry</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.PDBHits</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.Sequence</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.Keyword</class>
+          
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/revpred_ginkgo_mini_db" />
+      <property name="javax.persistence.jdbc.user" value="root" />
+      <property name="javax.persistence.jdbc.password" value="Ethgabitc!" />
+
+      <!-- EclipseLink should create the database schema automatically -->
+      <property name="eclipselink.ddl-generation" value="create-tables" />
+      <property name="eclipselink.ddl-generation.output-mode" value="database" />
+    </properties>
+  </persistence-unit>
+  
+  <persistence-unit name="revpred_at_full_db" transaction-type="RESOURCE_LOCAL">
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.PDBEntry</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.PDBHits</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.Sequence</class>
+    <class>au.edu.unimelb.plantcell.onekp.eclipselink.Keyword</class>
+          
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/revpred_at_full_db" />
+      <property name="javax.persistence.jdbc.user" value="root" />
+      <property name="javax.persistence.jdbc.password" value="Ethgabitc!" />
+
+      <!-- EclipseLink should create the database schema automatically -->
+      <property name="eclipselink.ddl-generation" value="create-tables" />
+      <property name="eclipselink.ddl-generation.output-mode" value="database" />
+    </properties>
+  </persistence-unit>
+  
   <persistence-unit name="ArabidopsisOneKPtestdb" transaction-type="RESOURCE_LOCAL">
     <class>au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit</class>
     <class>au.edu.unimelb.plantcell.onekp.eclipselink.PDBEntry</class>
