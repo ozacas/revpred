@@ -5,7 +5,7 @@ public class JPAConstants {
 	/*
 	 * PDB entry ID SQL data type (used for JPA persistence)
 	 */
-	public final static String SQL_TYPE_FOR_PDB_ID = "CHAR(6)";
+	public final static String SQL_TYPE_FOR_PDB_ID = "CHAR(12)";
 	
 	/**
 	 * 1kp identifier SQL data type (used for JPA persistence)

@@ -6,19 +6,36 @@ import java.util.List;
 import org.apache.commons.exec.LogOutputStream;
 
 import au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit;
+import au.edu.unimelb.plantcell.onekp.eclipselink.PDBHits;
 
 /**
- * Responsible for extracting hits to parse an updating internal state to reflect that
+ * Responsible for extracting hits to parse an updating internal state to reflect that. Only
+ * hits which pass the constructor-specified {@link AcceptHitCallback} are persisted to the database,
+ * enabling hit filtering.
+ * 
  * @author acassin
  *
  */
 public class HHBlitsHitParser extends LogOutputStream {
 	private boolean before_hit_summary, done_hits_summary;
 	private final List<HHPhredHit> hits = new ArrayList<HHPhredHit>();
+	private AcceptHitCallback acceptor = null;
+	private PDBHits owner;
 	
-	public HHBlitsHitParser() {
+	public HHBlitsHitParser(final PDBHits owner, final AcceptHitCallback acceptor) {
 		before_hit_summary = true;
 		done_hits_summary = false;
+		this.acceptor = acceptor;
+		this.owner = owner;
+		if (acceptor == null) {
+			this.acceptor = new AcceptHitCallback() {
+
+				@Override
+				public boolean accept(HHPhredHit test_me) {
+					return (test_me.getProbability() >= 50.0d);
+				}
+			};
+		}
 	}
 	
 	@Override
@@ -41,6 +58,7 @@ public class HHBlitsHitParser extends LogOutputStream {
 		HHPhredHit hit = new HHPhredHit();
 		hit.setHitIndex(Integer.valueOf(fields[0]));
 		hit.setPDBID(fields[1]);
+		hit.setOwner(owner);
 		// we process from the last argument to the first, since we cant know how many space-separated tokens
 		// the hit description produced
 		int last = fields.length-1;
@@ -60,7 +78,7 @@ public class HHBlitsHitParser extends LogOutputStream {
 		hit.setEvalue(Double.valueOf(fields[last--]));
 		hit.setProbability(Double.valueOf(fields[last--]));
 		
-		if (hit.getProbability() >= 50.0) {
+		if (acceptor.accept(hit)) {
 			hits.add(hit);
 		}
 	}
