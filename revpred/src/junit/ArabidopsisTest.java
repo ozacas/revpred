@@ -9,13 +9,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import org.junit.Test;
 
-import au.edu.unimelb.plantcell.hhblit.AbstractMain;
+import au.edu.unimelb.plantcell.hhpred.AbstractMain;
+import au.edu.unimelb.plantcell.hhpred.AcceptHitCallback;
+import au.edu.unimelb.plantcell.jpa.hhpred.HHPhredHit;
 
 /**
  * 
@@ -30,7 +31,7 @@ public class ArabidopsisTest extends AbstractMain {
 	 * @return
 	 */
 	protected String getPersistenceUnit() {
-		return "ArabidopsisOneKPtestdb";
+		return "revpred_at_minipdb";
 	}
 	
 	@Override
@@ -40,12 +41,12 @@ public class ArabidopsisTest extends AbstractMain {
 
 	@Override
 	public File getQueryFastaFile() {
-		return new File("/home/acassin/test/tplate-complex-arabidopsis/test.fasta");
+		return new File("/home/acassin/sequence-databases/phytozome.net/Athaliana_167_protein.fa");
 	}
 	
 	@Override
 	public String getPDBDatabase() {
-		return "minipdb_hhm_db";
+		return "tplate_hhm_db";
 	}
 
 	@Override
@@ -66,8 +67,22 @@ public class ArabidopsisTest extends AbstractMain {
 		return getEntityManagerFactory().createEntityManager();
 	}
 
+	/**
+	 * To avoid populating the database with poor hits (filling up limited disk space) we require a minimum
+	 * 10% threshold on the hit probability to persist it to the database
+	 */
+	@Override
+	protected AcceptHitCallback getHitAcceptor() {
+		return new AcceptHitCallback() {
+
+			@Override
+			public boolean accept(final HHPhredHit test_me) {
+				return (test_me.getProbability() >= 10.0);
+			}
+		};
+	}
+	
 	protected void populateDatabaseForTesting() {
-		EntityTransaction t = null;
 		try {
 			File pdb_folder = getPDBDatabaseFolder();
 			assertNotNull(pdb_folder);
@@ -76,29 +91,18 @@ public class ArabidopsisTest extends AbstractMain {
 			assertNotNull(em);
 
 			// read database file to load keyword database
-			/*System.err.println("Populating PDB Entries....");
-			t = em.getTransaction();
-			assertNotNull(t);
-			t.begin();
-			populatePDBEntries(em, new File(pdb_folder, getPDBDatabase()));
-			t.commit();
-			t = null;
-			System.err.println("After population of PDB data entries");*/
-			
+			System.err.println("Populating PDB Entries....");
 			// run hhpred and populate the database with hits and sequences. Sequences without
 			// hits do not appear in the database
 			runHHPhred(em, getQueryFastaFile());
 		} catch (Exception e) {
-			if (t != null) {
-				t.rollback();
-			}
 			e.printStackTrace();
 			fail("No exception should be thrown during database population!");
 		}
 	}
 	
 	@SuppressWarnings("unused")
-	private void testDatabaseForCorrectResults() {
+	protected void testDatabaseForCorrectResults() {
 		EntityManager em = getEntityManager();
 		String db = getPersistenceUnit();
 		String sql = "select t1.*,t2.*,t3.* from "+

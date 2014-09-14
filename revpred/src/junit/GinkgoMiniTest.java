@@ -1,13 +1,8 @@
 package junit;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.Test;
-
-import au.edu.unimelb.plantcell.hhblit.AcceptHitCallback;
-import au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit;
 
 /**
  * This test populates the revpred_ginkgo_mini_db database as described in persistence.xml with

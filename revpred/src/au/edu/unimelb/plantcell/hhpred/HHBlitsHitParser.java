@@ -1,12 +1,12 @@
-package au.edu.unimelb.plantcell.hhblit;
+package au.edu.unimelb.plantcell.hhpred;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.exec.LogOutputStream;
 
-import au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit;
-import au.edu.unimelb.plantcell.onekp.eclipselink.PDBHits;
+import au.edu.unimelb.plantcell.jpa.hhpred.HHPhredHit;
+import au.edu.unimelb.plantcell.jpa.hhpred.PDBHits;
 
 /**
  * Responsible for extracting hits to parse an updating internal state to reflect that. Only

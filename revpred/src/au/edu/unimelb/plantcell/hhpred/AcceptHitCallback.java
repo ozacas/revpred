@@ -1,6 +1,6 @@
-package au.edu.unimelb.plantcell.hhblit;
+package au.edu.unimelb.plantcell.hhpred;
 
-import au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit;
+import au.edu.unimelb.plantcell.jpa.hhpred.HHPhredHit;
 
 public interface AcceptHitCallback {
 	/**
