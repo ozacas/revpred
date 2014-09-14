@@ -1,4 +1,4 @@
-package au.edu.unimelb.plantcell.hhblit;
+package au.edu.unimelb.plantcell.hhpred;
 
 import java.io.File;
 import java.io.IOException;

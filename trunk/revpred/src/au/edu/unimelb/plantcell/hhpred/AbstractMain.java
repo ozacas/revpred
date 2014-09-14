@@ -1,4 +1,4 @@
-package au.edu.unimelb.plantcell.hhblit;
+package au.edu.unimelb.plantcell.hhpred;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,10 +22,10 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.LogOutputStream;
 import org.apache.commons.exec.PumpStreamHandler;
 
-import au.edu.unimelb.plantcell.onekp.eclipselink.HHPhredHit;
-import au.edu.unimelb.plantcell.onekp.eclipselink.PDBEntry;
-import au.edu.unimelb.plantcell.onekp.eclipselink.PDBHits;
-import au.edu.unimelb.plantcell.onekp.eclipselink.Sequence;
+import au.edu.unimelb.plantcell.jpa.hhpred.HHPhredHit;
+import au.edu.unimelb.plantcell.jpa.hhpred.PDBEntry;
+import au.edu.unimelb.plantcell.jpa.hhpred.PDBHits;
+import au.edu.unimelb.plantcell.jpa.hhpred.Sequence;
 
 public abstract class AbstractMain {
 
@@ -229,7 +229,9 @@ public abstract class AbstractMain {
 						t.commit();
 						persisted++;
 					} catch (Exception e) {
-						t.rollback();
+						if (t.isActive()) {
+							t.rollback();
+						}
 						throw e;
 					}
 				} else {
@@ -246,6 +248,14 @@ public abstract class AbstractMain {
 		System.err.println("Time taken: "+(int)((end-start)/1000)+" seconds.");
 	}
 
+	/**
+	 * Reads a single sequence into the specified StringBuilder, using <code>sb.append()</code> methods.
+	 * 
+	 * @param rdr
+	 * @param sb
+	 * @return
+	 * @throws IOException
+	 */
 	protected String readNextSequence(final BufferedReader rdr, final StringBuilder sb) throws IOException {
 		assert(rdr != null && sb != null && rdr.markSupported() && sb.length() == 0);
 		String line = rdr.readLine();
@@ -268,6 +278,15 @@ public abstract class AbstractMain {
 		return id;
 	}
 
+	/**
+	 * Saves a single (protein) sequence to the specified file. The file is deleted before it is created.
+	 * The sequence is given the specified id.
+	 * 
+	 * @param query_fasta_sequence_file file to save the protein sequence to
+	 * @param id must not be null
+	 * @param seq must not be null
+	 * @throws IOException on fatal error
+	 */
 	protected void saveQuerySequenceTo(File query_fasta_sequence_file, String id, String seq) throws IOException {
 		if (id == null || seq == null || seq.length() < 1) {
 			throw new IOException("Illegal arguments to save to query file! length="+seq.length()+" id="+id);

@@ -5,28 +5,27 @@ import java.io.File;
 import org.junit.Test;
 
 /**
- * Tries to identify chlamy TPLATE complex proteins using the Ginkgo test as the superclass.
  * 
  * @author acassin
+ *
  */
-public class ChlamyTest extends MossTest {
+public class SpikeMossTest extends ArabidopsisTest {	
 	/**
 	 * Must correspond to name of the persistence unit in persistence.xml
 	 * @return
 	 */
 	protected String getPersistenceUnit() {
-		return "revpred_chlamy_minipdb";
+		return "revpred_spikemoss_minipdb";
 	}
 	
 	@Override
 	public File getQueryFastaFile() {
-		return new File("/home/acassin/sequence-databases/phytozome.net/Creinhardtii_281_v5.5.protein.fa");
+		return new File("/home/acassin/sequence-databases/phytozome.net/Smoellendorffii_91_peptide.fa");
 	}
 	
-	@Override
 	@Test
 	public void runTests() {
 		populateDatabaseForTesting();
-		
+		//testDatabaseForCorrectResults();
 	}
 }

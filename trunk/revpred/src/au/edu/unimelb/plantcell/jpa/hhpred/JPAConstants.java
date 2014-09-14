@@ -1,16 +1,16 @@
-package au.edu.unimelb.plantcell.onekp.eclipselink;
+package au.edu.unimelb.plantcell.jpa.hhpred;
 
 public class JPAConstants {
 
 	/*
 	 * PDB entry ID SQL data type (used for JPA persistence)
 	 */
-	public final static String SQL_TYPE_FOR_PDB_ID = "CHAR(12)";
+	public final static String SQL_TYPE_FOR_PDB_ID = "VARCHAR(250)";
 	
 	/**
 	 * 1kp identifier SQL data type (used for JPA persistence)
 	 */
-	public static final String SQL_TYPE_FOR_1KP_ID = "CHAR(16)";
+	public static final String SQL_TYPE_FOR_1KP_ID = "VARCHAR(250)";
 	
 	/**
 	 * PDB entry descriptions are stored using this column type

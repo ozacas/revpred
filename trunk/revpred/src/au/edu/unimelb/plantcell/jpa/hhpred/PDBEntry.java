@@ -1,4 +1,4 @@
-package au.edu.unimelb.plantcell.onekp.eclipselink;
+package au.edu.unimelb.plantcell.jpa.hhpred;
 
 import java.io.Serializable;
 import java.util.ArrayList;
