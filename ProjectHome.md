@@ -1,0 +1,1 @@
+Creates a reverse PDB database enabling identification of structural homologues with little sequence similarity using hhpred.
